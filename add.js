@@ -14,3 +14,7 @@ const del = (x, y) => {
 const remove = () => {
     return true;
 }
+
+const addLeft = () => {
+    return 'left';
+}
