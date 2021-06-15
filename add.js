@@ -3,8 +3,8 @@ const add = (x, y) => {
 }
 
 
-const del = () => {
-    return false;
+const del = (x, y) => {
+    delete x[y];
 }
 
 
