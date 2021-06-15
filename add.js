@@ -14,3 +14,8 @@ const del = (x, y) => {
 const remove = () => {
     return true;
 }
+
+
+const addCopy = () => {
+    return '测试';
+}
