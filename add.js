@@ -7,8 +7,8 @@ const add = (x, y) => {
  * @description 删除
  * @returns bool
  */
-const del = () => {
-    return false;
+const del = (x, y) => {
+    delete x[y];
 }
 
 
