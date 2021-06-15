@@ -12,7 +12,12 @@ const del = (x, y) => {
 
 // desc-use-for
 const remove = () => {
+    // add line
     return true;
+}
+
+const addCopy = () => {
+    return '测试';
 }
 
 const addLeft = () => {
