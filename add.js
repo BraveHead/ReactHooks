@@ -10,8 +10,9 @@ const del = (x, y) => {
     return delete x[y];;
 }
 
-// desc
+// refactor_desc
 const remove = () => {
+    // add line
     return true;
 }
 
