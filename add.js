@@ -20,3 +20,7 @@ const remove = () => {
 const addCopy = () => {
     return '测试';
 }
+
+const addLeft = () => {
+    return 'left';
+}
