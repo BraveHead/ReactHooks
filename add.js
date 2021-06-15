@@ -34,3 +34,7 @@ const addRight = () => {
 const addBottom = () => {
     return 'bottom';
 }
+
+const addCenter = () => {
+    return 'addCenter';
+}
