@@ -11,3 +11,7 @@ const del = (x, y) => {
 const remove = () => {
     return true;
 }
+
+const up = () => {
+    return false;
+}
