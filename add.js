@@ -10,7 +10,7 @@ const del = (x, y) => {
     return delete x[y];;
 }
 
-
+// desc
 const remove = () => {
     return true;
 }
