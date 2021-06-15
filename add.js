@@ -6,3 +6,8 @@ const add = (x, y) => {
 const del = () => {
     return false;
 }
+
+
+const remove = () => {
+    return true;
+}
