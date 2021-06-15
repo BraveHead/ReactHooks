@@ -16,15 +16,10 @@ const remove = () => {
     return true;
 }
 
-
 const addCopy = () => {
     return '测试';
 }
 
 const addLeft = () => {
     return 'left';
-}
-
-const addCopy = () => {
-    return '测试';
 }
