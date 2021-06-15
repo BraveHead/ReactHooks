@@ -23,3 +23,7 @@ const addCopy = () => {
 const addLeft = () => {
     return 'left';
 }
+
+const addRight = () => {
+    return 'addRight';
+}
