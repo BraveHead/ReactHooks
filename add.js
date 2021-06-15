@@ -7,7 +7,7 @@ const del = (x, y) => {
     delete x[y];
 }
 
-// 不要这玩意
+// desc
 const remove = () => {
     return true;
 }
