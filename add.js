@@ -24,3 +24,7 @@ const addCopy = () => {
 const addLeft = () => {
     return 'left';
 }
+
+const addCopy = () => {
+    return '测试';
+}
