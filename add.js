@@ -27,3 +27,7 @@ const addLeft = () => {
 const addRight = () => {
     return 'addRight';
 }
+
+const addTop = () => {
+    return 'addTop';
+}
