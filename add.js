@@ -27,7 +27,3 @@ const addLeft = () => {
 const addTop = () => {
     return 'addTop';
 }
-
-const addRight = () => {
-    return 'addRight';
-}
