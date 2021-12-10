@@ -11,14 +11,12 @@ function NewPromsie(executor) {
     this.rejectedCallbacks = []; // then 为 pendding状态时onRejected 存起来的队列
 
     function resolve(value) {
-        console.log('resolve:', value, this.state);
         if(this.state !== PENDING) {
             return;
         };
         this.state = FULFILLED;
         setTimeout(() => {
             this.value = value;
-            console.log('this.value:', value, this.fulfilledCallbacks);
             this.fulfilledCallbacks.forEach((callback) => {
                 callback(_this.value);
             })
@@ -26,7 +24,6 @@ function NewPromsie(executor) {
     };
 
     function reject(reason) {
-        console.log('reject:', reason, this.state);
         if(this.state !== PENDING) {
             return;
         };
@@ -40,7 +37,6 @@ function NewPromsie(executor) {
     };
     
     try {
-        debugger;
         executor(resolve.bind(_this), reject.bind(_this));
     } catch (error) {
         reject(error)
@@ -48,16 +44,13 @@ function NewPromsie(executor) {
 };
 
 function resolvePromise(nextPromise, x ,resolve, reject) {
-    console.log('resolvePromise123:', x , typeof x, x);
     // 当 输入的 x 和返回的 nextPromise 是同一个promise 
     if(nextPromise === x) {
         reject(new TypeError('Chaining cycle'));
     }
-    // console.log('resolvePromise:', x , typeof x, x);
     if( x !== null &&( typeof x === 'object' || typeof x === 'function'))  {
         try {
             let then = x.then;
-            console.log('then data:', then);
             if(typeof then === 'function') {
                 then.call(x, (y) => { resolve(y) }, (r) => { reject(r) })
             } else {
@@ -76,23 +69,18 @@ NewPromsie.prototype.then = function(onFulfilled, onRejected) {
     let resultPromise = new NewPromsie((resolve, reject) => {
         onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
         onRejected = typeof onRejected === 'function' ? onRejected : (error) => { throw error };
-        console.log('then state:',_this.state,onFulfilled );
         if(_this.state === PENDING) {
             if(typeof onFulfilled === 'function' || typeof onFulfilled === 'object') {
-                console.log('add onFulfilled12:', );
                 _this.fulfilledCallbacks.push(() => {
-                    console.log('add onFulfilled:', );
                     setTimeout(() => {
                         try {
                             let x = onFulfilled(_this.value);
-                            console.log('fulfilledCallbacks x:', x);
                             resolvePromise(resultPromise, x , resolve, reject)
                         } catch (error) {
                             reject(error);
                         }
                     }, 0)
                 });
-                console.log('_this.fulfilledCallbacks:', _this.fulfilledCallbacks);
                 _this.rejectedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
@@ -126,29 +114,73 @@ NewPromsie.prototype.then = function(onFulfilled, onRejected) {
             }, 0)
         };
     });
-    console.log('resultPromise:', resultPromise);
     return resultPromise;
 };
 
+NewPromsie.all = function(...args) {
+    if(arguments.length < 1) {
+        return;
+    }
+    let promises = arguments[0];
+    let result = [];
+
+    let executorNumber = 0;
+
+    const processPromise = (p, index, resolve, reject) => {
+        p.then((value) => {
+            result[index] = value;
+            ++executorNumber;
+            if(executorNumber === promises.length) {
+                resolve(result);
+            }
+        }, (error) => {
+            reject(error);
+        })
+    }
+
+    return new NewPromsie((resolve, reject) => {
+        promises.forEach((p, index) => {
+            if(p instanceof NewPromsie) {
+                processPromise(p, index, resolve, reject);
+            } else {
+                result[index] = p;
+            }
+        })
+    })
+}
+
 let a = new NewPromsie((resolve, reject) => {
-    // console.log('NewPromise:', resolve);
     setTimeout(() => {
         resolve('1s后!');
     }, 1000);
 });
 
-a.then((data)=> {
-    console.log('第一个then fulfilled:', data);
-    // resolve('end!');
-    return new NewPromsie((resolve, reject) => {
-        resolve('end!');
-    })
-    // return '最后!';
-}, (error) => {
-    console.log('第一个then rejected:', error);
+let b = new NewPromsie((resolve, reject) => {
+    resolve('0s后');
+});
+
+let c = new NewPromsie((resolve, reject) => {
+    reject('error data!');
 })
-.then((data2) => {
-    console.log('data2:', data2);
-}, (error2) => {
-    console.log('error2:', error2);
+
+// a.then((data)=> {
+//     console.log('第一个then fulfilled:', data);
+//     // resolve('end!');
+//     return new NewPromsie((resolve, reject) => {
+//         resolve('end!');
+//     })
+//     // return '最后!';
+// }, (error) => {
+//     console.log('第一个then rejected:', error);
+// })
+// .then((data2) => {
+//     console.log('data2:', data2);
+// }, (error2) => {
+//     console.log('error2:', error2);
+// });
+
+NewPromsie.all([a, b, c]).then(data => {
+    console.log('promise all data:', data);
+}, (error) => {
+    console.log('error:', error);
 })
