@@ -149,9 +149,43 @@ NewPromsie.all = function(...args) {
     })
 }
 
+NewPromsie.race = function(...args) {
+    if(arguments.length < 1) {
+        return;
+    };
+    let racePromises = arguments[0];
+
+    // let result = [];
+
+    let processCounter = 0;
+
+    return new NewPromsie((resolve, reject) => {
+        if(racePromises.length === 0) {
+            resolve(racePromises);
+        };
+
+        racePromises.forEach((promise, index) => {
+            if(processCounter >= 1) return; 
+            if(promise instanceof NewPromsie) {
+                promise.then((data) => {
+                    resolve(data);
+                    ++processCounter;
+                }, (error) => {
+                    reject(error);
+                    ++processCounter;
+                });
+            } else {
+                resolve(promise);
+                ++processCounter;
+            };
+        })
+    })
+}
+
 let a = new NewPromsie((resolve, reject) => {
     setTimeout(() => {
         resolve('1s后!');
+        console.log('1s 后');
     }, 1000);
 });
 
@@ -160,8 +194,14 @@ let b = new NewPromsie((resolve, reject) => {
 });
 
 let c = new NewPromsie((resolve, reject) => {
-    reject('error data!');
-})
+    // reject('error data!');
+    setTimeout(() => {
+        resolve('2s 后');
+        console.log('2s 后');
+    }, 2000)
+});
+
+let d = '常量d';
 
 // a.then((data)=> {
 //     console.log('第一个then fulfilled:', data);
@@ -179,8 +219,8 @@ let c = new NewPromsie((resolve, reject) => {
 //     console.log('error2:', error2);
 // });
 
-NewPromsie.all([a, b, c]).then(data => {
-    console.log('promise all data:', data);
+NewPromsie.race([a,d, b, c, ]).then(data => {
+    console.log('promise race data:', data);
 }, (error) => {
     console.log('error:', error);
 })
