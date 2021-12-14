@@ -160,5 +160,15 @@
 
     以下为封装函数 [手写ajax函数](./ajax.js)
 
+14. 手写一个 Promise?
+    
+    以下为封装函数 [手写Promise函数](./promise.js).
+
+15. 手写一个 generator?
+
+    以下未扎封装函数 [手写generator](./generator.js).
+
+
+
 
 
