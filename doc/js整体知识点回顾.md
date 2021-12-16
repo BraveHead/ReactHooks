@@ -168,12 +168,40 @@
 
     以下未扎封装函数 [手写generator](./generator.js).
 
-16. 什么是迭代协议？什么是迭代器？
+16. 什么是可迭代协议？什么是迭代器协议？
 
 - 可迭代协议允许JavaScript对象定义或定制它们的迭代行为。例如在 一个 `for...of` 结构中，哪些值可以被遍历到。一些内置类型同时还是 `内置可迭代对象`，并且有默认的迭代行为，比如 `Array`和 `Map`,而其他类型则不是，如 `Object`。
   要成为一个可迭代的对象，必须要实现 `@@iterator`方法。这意味着对象必须有一个 `@@iterator`的key值。
 
-17. 如何手写一个可以迭代的对象(object)?
+- 迭代器协议定义了产生一系列值(无论是有限值还是无限值)的标准方式。当值为有限的时候，迭代完成后，则会返回一个默认的值。 只有实现了一个拥有 `next()` 方法，一个对象才能成为迭代器。
+
+- [简单的迭代器Demo](./iterator.js)
+
+
+17. 如何手写一个可以迭代的对象(object)?  // TODO 
+
+```js
+
+    let obj = {
+        name: '123',
+        age: 20,
+
+        [Symbol.iterator]: function* () {
+            let keys = Object.keys(obj);
+            let index = 0;
+            while(index < keys.length) {
+                yield obj[keys[index++]];
+            };
+        }
+    };
+
+    // 可以通过 for...of 去判断当前对象是否是一个迭代器, 没有[Symbol.iterator]会报错
+    for(let key of obj) {
+        console.log('key:', key);
+    }
+
+
+```
 
 
 18. 为什么 用箭头函数不能 new ? 能不能说下new的过程并手写一个new 函数？
@@ -196,7 +224,11 @@
 - 手写的一个 [new方法](./new.js)
 
 
-19. 说下 this 的指向？ 箭头函数的this? 普通函数的 this? 
+19. 说下 this 的指向？ 箭头函数的this? 普通函数的 this? // TODO 
+
+- [ES6箭头函数的this指向详解](https://zhuanlan.zhihu.com/p/57204184)
+
+- [Javascript ：this关键字 详解](https://zhuanlan.zhihu.com/p/25349790)
 
 
 
