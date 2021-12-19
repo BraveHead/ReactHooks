@@ -230,6 +230,59 @@
 
 - [Javascript ：this关键字 详解](https://zhuanlan.zhihu.com/p/25349790)
 
+- 普通函数中的this指向和在哪里被定义的没有关系, 只和当前的函数在哪里被调用, 那么this就指向当前被调用的作用域。
+
+```js
+    // example-1
+    var name = 'default';
+    function A() {
+        this.name = 'zs';
+        this.getName = function() {
+            return this.name;
+        };
+        return this;
+    };
+
+    // 执行
+    console.log(A().getName()); // zs 因为 A()=> 返回的 this 是 A 的实例, 所有等于对象A上调用 getName() => zs;
+
+    var age = 10;
+
+    let Age = {
+        age: 20,
+        name: 'KK',
+        getAge: function() {
+            return `${this.name} : ${this.age}`;
+        }
+    };
+
+    console.log('str1:', Age.getAge()); // 'KK: 20';
+
+    // 改造一下
+
+    let Age1 = {
+        age: 20,
+        name: 'KK',
+        getAge: function() {
+            return function() {
+                return `${this.name} : ${this.age}`;
+            };
+        },
+    };
+
+    console.log('str2:', Age1.getAge()()); // ’zs : 10‘, 因为 等于是 var age = Age1.getAge(); window.age(); 那这个 age执行的时候可不就是挂载在当前的window上
+```
+
+- 下面是普通函数中this的4种使用场景:
+    - 在一般函数方法中使用 this 当做全局对象:
+    如下
+    ```js
+        function test() {
+            let name = 'zs';
+            console.log(this.age);
+        };
+        test(); // undefind.
+    ```
 
 
 
