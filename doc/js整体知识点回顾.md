@@ -323,4 +323,25 @@
 - 第五种寄生示继承。
 - 第六种寄生示组合式继承。
 
+23. 寄生示组合继承的实现？
+
+```js
+    function SuperType() {
+        this.name = name;
+    };
+
+    SuperType.prototype.sayName = function() {
+        console.log('name:', name);
+    };
+
+    function SubType() {
+        this.age = 10;
+        SuperType.call(this); // 构造
+    };
+
+    // 继承
+    SubType.prototype = Object.create(SuperType.prototype);
+    SubType.prototype.constructor = SubType; 
+```
+
 
